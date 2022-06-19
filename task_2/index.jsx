@@ -1,10 +1,15 @@
-import { Fragment, memo } from 'react';
+import { useState, Fragment, memo, useCallback } from 'react';
 
 const MainComponent = () => {
-    const makeLog = () => console.log('hi from MainComponent'); // function to make logs from MainComponent
+    const [ _, updateComponent ] = useState(); // change state for force component updating
+
+    const makeLog = useCallback(() => {
+        console.log('hi from MainComponent');
+    }, []);
 
     return (
         <Fragment>
+            <button onClick={updateComponent}>update MainComponent</button>
             <ChildComponent makeLog={makeLog} />
         </Fragment>
     );
@@ -12,5 +17,5 @@ const MainComponent = () => {
 
 // memoized component
 const ChildComponent = memo(({ makeLog }) => (
-    <button onClick={makeLog}>say Hi from ChildComponent</button>
+    <button onClick={makeLog}>say Hi from MainComponent</button>
 ));

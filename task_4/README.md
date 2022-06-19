@@ -11,7 +11,3 @@
 ## Условия❗️
 
  * `MainComponent` должен оставаться неизменным.
-
-***
-
-##### [Ссылка на песочницу](https://codesandbox.io/s/task-4-sp2n4c?file=/src/taskComponents.jsx)

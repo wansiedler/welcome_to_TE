@@ -1,18 +1,28 @@
-import { Fragment, memo } from 'react';
+import { useState, Fragment, memo, useMemo } from 'react';
 
-const MainComponent = ({
-    user = { name: 'unknown', age: null } // default value for `props.user`
-}) => {
-    return (
-        <Fragment>
-            <ChildComponent user={user} />
-        </Fragment>
-    );
+const MainComponent = ({ name, age }) => {
+  const [ _, updateComponent ] = useState(); // change state for force component updating
+
+  const user = useMemo(() => {
+    return {name, age}
+  }, [name, age])
+
+  return (
+      <Fragment>
+          <button onClick={updateComponent}>update MainComponent</button>
+          <ChildComponent user={user} />
+      </Fragment>
+  );
 };
+
+MainComponent.defaultProps = {
+  name: 'unknown',
+  age: null,
+}
 
 // memoized component
 const ChildComponent = memo(({ user: { name, age } }) => {
-    return (
-        <div>user name: {name}, user age: {age}</div>
-    )
+  return (
+      <div>user name: {name}, user age: {age}{console.log('Child component updated')}</div>
+  );
 });

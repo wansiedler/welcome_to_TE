@@ -1,28 +1,38 @@
-import { Component, createRef } from 'react';
+import {
+  Component,
+  createRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 
 class MainComponent extends Component {
-    myRef = createRef(); // create simple ref
+  myRef = createRef();
 
-    toggleChildVisibility = () => this.myRef.current.toggleButton(); // method to hide or show child component
+  toggleChildVisibility = () => this.myRef.current.toggleButton();
 
-    render() {
-        return (
-            <>
-                <button onClick={this.toggleChildVisibility}>toggle child component</button>
-                <ChildComponent ref={this.myRef} />  {/* set ref to controll child component */}
-            </>
-        );
-    }
-};
+  render() {
+    return (
+      <>
+        <button onClick={this.toggleChildVisibility}>
+          toggle child component
+        </button>
+        <ChildComponent ref={this.myRef} />{" "}
+      </>
+    );
+  }
+}
 
-class ChildComponent extends Component {
-    state = { isActive: true };
+const ChildComponent = forwardRef((props, ref) => {
+  const [isActive, setIsActive] = useState(true);
 
-    toggleButton = () => this.setState({ isActive: !this.state.isActive });
+  const toggleButton = () => setIsActive((currState) => !currState);
 
-    render() {
-        return (
-            this.state.isActive ? <div>child component</div> : null
-        );
-    }
-};
+  useImperativeHandle(ref, () => ({
+    toggleButton,
+  }));
+
+  if (isActive) {
+    return <div>child component</div>;
+  }
+});
